@@ -32,10 +32,10 @@ public class Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, View.OnClickListener,
         GoogleMap.OnMapLongClickListener, GoogleMap.OnMapClickListener {
 
-    com.github.clans.fab.FloatingActionMenu btnMenu;
+    /*com.github.clans.fab.FloatingActionMenu btnMenu;
     com.github.clans.fab.FloatingActionButton btnCambiarEstilo;
     com.github.clans.fab.FloatingActionButton btnAgregarEvento;
-    com.github.clans.fab.FloatingActionButton btnMiUbicacion;
+    com.github.clans.fab.FloatingActionButton btnMiUbicacion;*/
 
     private GoogleMap mMap;
     static int contadorMapa = 0;
@@ -66,7 +66,7 @@ public class Main extends AppCompatActivity
 
 
         //menu flotante
-        btnMenu = (com.github.clans.fab.FloatingActionMenu) findViewById(R.id.fabPrincipal);
+        /*btnMenu = (com.github.clans.fab.FloatingActionMenu) findViewById(R.id.fabPrincipal);
         btnMenu.setClosedOnTouchOutside(true);
 
 
@@ -77,7 +77,7 @@ public class Main extends AppCompatActivity
 
         btnCambiarEstilo.setOnClickListener(this);
         btnAgregarEvento.setOnClickListener(this);
-        btnMiUbicacion.setOnClickListener(this);
+        btnMiUbicacion.setOnClickListener(this);*/
 
 
         //cargarSitiosCreados();
@@ -116,6 +116,35 @@ public class Main extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            switch (contadorMapa) {
+                case 0:
+                    mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                    Toast.makeText(this, "Tipo de mapa Híbrido", Toast.LENGTH_SHORT).show();
+                    contadorMapa += 1;
+                    break;
+                case 1:
+                    mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
+                    Toast.makeText(this, "Tipo de mapa Ninguno", Toast.LENGTH_SHORT).show();
+                    contadorMapa += 1;
+                    break;
+                case 2:
+                    mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                    Toast.makeText(this, "Tipo de mapa Normal", Toast.LENGTH_SHORT).show();
+                    contadorMapa += 1;
+                    break;
+                case 3:
+                    mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                    Toast.makeText(this, "Tipo de mapa Satélite", Toast.LENGTH_SHORT).show();
+                    contadorMapa += 1;
+                    break;
+                case 4:
+                    mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                    Toast.makeText(this, "Tipo de mapa Terreno", Toast.LENGTH_SHORT).show();
+                    contadorMapa = 0;
+                    break;
+                default:
+                    break;
+            }
             return true;
         }
 
@@ -190,50 +219,7 @@ public class Main extends AppCompatActivity
 
     @Override
     public void onClick(View view) {
-        //switch para verificar cual boton se esta presionando
-        switch (view.getId()) {
-            case R.id.cambiar_estiloMapa:
-                //switch para verificar el numero del tipo de mapa que tendra asignado
-                switch (contadorMapa) {
-                    case 0:
-                        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                        Toast.makeText(this, "Tipo de mapa Híbrido", Toast.LENGTH_SHORT).show();
-                        contadorMapa += 1;
-                        break;
-                    case 1:
-                        mMap.setMapType(GoogleMap.MAP_TYPE_NONE);
-                        Toast.makeText(this, "Tipo de mapa Ninguno", Toast.LENGTH_SHORT).show();
-                        contadorMapa += 1;
-                        break;
-                    case 2:
-                        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                        Toast.makeText(this, "Tipo de mapa Normal", Toast.LENGTH_SHORT).show();
-                        contadorMapa += 1;
-                        break;
-                    case 3:
-                        mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                        Toast.makeText(this, "Tipo de mapa Satélite", Toast.LENGTH_SHORT).show();
-                        contadorMapa += 1;
-                        break;
-                    case 4:
-                        mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
-                        Toast.makeText(this, "Tipo de mapa Terreno", Toast.LENGTH_SHORT).show();
-                        contadorMapa = 0;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case R.id.agregarEvento:
-                Intent ingresarEvento = new Intent(Main.this, Ingresar_Evento.class);
-                startActivity(ingresarEvento);
-                break;
-            case R.id.miUbicacion:
-                irUbicacionActual();
-                break;
-            default:
-                break;
-        }
+
     }
 
     private void irUbicacionActual() {
