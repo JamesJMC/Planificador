@@ -54,7 +54,7 @@
             android:name=".GUI.MenuPrincipal"
             android:label="@string/title_activity_menu_principal"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".VerInfoSistema"></activity>
+        <activity android:name=".GUI.VerInfoSistema"></activity>
     </application>
 
 </manifest>

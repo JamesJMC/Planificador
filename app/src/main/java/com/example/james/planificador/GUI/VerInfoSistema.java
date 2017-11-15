@@ -1,4 +1,4 @@
-package com.example.james.planificador;
+package com.example.james.planificador.GUI;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.james.planificador.R;
 
 public class VerInfoSistema extends AppCompatActivity {
 

@@ -1,10 +1,15 @@
 package com.example.james.planificador.GUI;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +19,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.james.planificador.R;
-import com.example.james.planificador.VerInfoSistema;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,12 +40,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, View.OnClickListener,
-        GoogleMap.OnMapLongClickListener, GoogleMap.OnMapClickListener {
+        GoogleMap.OnMapLongClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
 
     /*com.github.clans.fab.FloatingActionMenu btnMenu;
     com.github.clans.fab.FloatingActionButton btnCambiarEstilo;
     com.github.clans.fab.FloatingActionButton btnAgregarEvento;
     com.github.clans.fab.FloatingActionButton btnMiUbicacion;*/
+
+    private static final LatLng PERTH = new LatLng(-31.952854, 115.857342);
+    private static final LatLng SYDNEY = new LatLng(-33.87365, 151.20689);
+    private static final LatLng BRISBANE = new LatLng(-27.47093, 153.0235);
+
+    private Marker mPerth;
+    private Marker mSydney;
+    private Marker mBrisbane;
 
     private GoogleMap mMap;
     static int contadorMapa = 0;
@@ -210,6 +227,23 @@ public class Main extends AppCompatActivity
             return;
         }
         mMap.setMyLocationEnabled(true);
+
+        // Add some markers to the map, and add a data object to each marker.
+        mPerth = mMap.addMarker(new MarkerOptions().position(PERTH).title("Perth"));
+        mPerth.setTag(0);
+
+        mSydney = mMap.addMarker(new MarkerOptions()
+                .position(SYDNEY)
+                .title("Sydney"));
+        mSydney.setTag(0);
+
+        mBrisbane = mMap.addMarker(new MarkerOptions()
+                .position(BRISBANE)
+                .title("Brisbane"));
+        mBrisbane.setTag(0);
+
+        // Set a listener for marker click.
+        mMap.setOnMarkerClickListener(this);
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMapClickListener(this);
         // Add a marker in Sydney and move the camera
@@ -255,6 +289,67 @@ public class Main extends AppCompatActivity
     public void onMapClick(LatLng latLng)
     {
 
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        final AlertDialog.Builder alert = new AlertDialog.Builder(Main.this);
+
+        alert.setTitle("Agregar sitio");
+        alert.setMessage("Por favor rellene todos los espacios");
+
+        // Set an EditText view to get user input
+        Context context = Main.this;
+        LinearLayout layout = new LinearLayout(context);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        final EditText inputName = new EditText(context);
+        inputName.setHint("Nombre");
+        layout.addView(inputName);
+
+        final Spinner categorias = new Spinner(Main.this);
+        //añadir las categorias al spinner
+        layout.addView(categorias);
+
+        final EditText inputNumber = new EditText(context);
+        inputNumber.setHint("Telefono");
+        layout.addView(inputNumber);
+
+        final GridView gridViewImagenes = new GridView(Main.this);
+
+
+        final ImageButton imagenes = new ImageButton(Main.this);
+        imagenes.setImageResource(R.drawable.ic_menu_camera);
+        imagenes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        layout.addView(imagenes);
+
+        alert.setView(layout);
+
+        alert.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Guardamos el valor digitado en una variable o lo mostramos en
+                // un TextViews no se lo que se nos ocurra o lo que necesitemos
+                // hacer.
+                String cadenaName = inputName.getText().toString();
+                String cadenaumber = inputNumber.getText().toString();
+            }
+        });
+
+        alert.setNegativeButton("Cancelar",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+        alert.show();
+
+
+        return false;
     }
 
 
