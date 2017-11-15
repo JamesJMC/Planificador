@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/add_event"
+            android:icon="@drawable/ic_event_add"
+            android:title="Agregar evento" />
+        <item
+            android:id="@+id/list_events"
+            android:icon="@drawable/ic_event_list"
+            android:title="Lista de eventos" />
+        <item
+            android:id="@+id/invitation"
+            android:icon="@drawable/ic_invitacion"
+            android:title="Hacer una invitación" />
+        <item
+            android:id="@+id/contacts"
+            android:icon="@drawable/ic_contactos"
+            android:title="Contactos" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/info"
+                android:icon="@drawable/ic_info_desarrollador"
+                android:title="Info" />
+            <item
+                android:id="@+id/cerrar"
+                android:icon="@drawable/ic_cerrar_sesion"
+                android:title="Cerrar sesión" />
+        </menu>
+    </item>
+
+</menu>
