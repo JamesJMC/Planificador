@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.james.planificador.R;
+import com.example.james.planificador.VerInfoSistema;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -146,6 +147,11 @@ public class Main extends AppCompatActivity
                     break;
             }
             return true;
+        }
+        if(id == R.id.infoSistema)
+        {
+            Intent info = new Intent(Main.this, VerInfoSistema.class);
+            startActivity(info);
         }
 
         return super.onOptionsItemSelected(item);

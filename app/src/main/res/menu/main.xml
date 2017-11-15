@@ -5,4 +5,9 @@
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="Estilo de mapa" />
+
+    <item
+        android:id="@+id/infoSistema"
+        android:orderInCategory="100"
+        android:title="Info sistema"/>
 </menu>
