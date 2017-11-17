@@ -2,14 +2,21 @@ package com.example.james.planificador.GUI;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,13 +26,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.james.planificador.LogicaDB.DataDB;
 import com.example.james.planificador.R;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -37,28 +50,37 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
 
 public class Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, View.OnClickListener,
         GoogleMap.OnMapLongClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
 
-    /*com.github.clans.fab.FloatingActionMenu btnMenu;
-    com.github.clans.fab.FloatingActionButton btnCambiarEstilo;
-    com.github.clans.fab.FloatingActionButton btnAgregarEvento;
-    com.github.clans.fab.FloatingActionButton btnMiUbicacion;*/
-
-    private static final LatLng PERTH = new LatLng(-31.952854, 115.857342);
-    private static final LatLng SYDNEY = new LatLng(-33.87365, 151.20689);
-    private static final LatLng BRISBANE = new LatLng(-27.47093, 153.0235);
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     private Marker mPerth;
     private Marker mSydney;
     private Marker mBrisbane;
 
+    GridViewAdapter adapter;
+    // Declare variables
+    private String[] FilePathStrings;
+    private String[] FileNameStrings;
+    private File[] listFile;
+
     private GoogleMap mMap;
     static int contadorMapa = 0;
     double lat, lon = 0;
     private Marker marcador;
+    private ImageView imageView;
+
+    //carpeta de imagenes de todo el proyecto
+    private File nuevaCarpeta;
+    public static String identificarMarca;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +88,8 @@ public class Main extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -80,25 +104,26 @@ public class Main extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
+        //CARPETA DEL PROYECTO
+        crearAlbumPATH("Planificador");
         //AGREGAR MARCADORES DE SITIOS
 
 
-        //menu flotante
-        /*btnMenu = (com.github.clans.fab.FloatingActionMenu) findViewById(R.id.fabPrincipal);
-        btnMenu.setClosedOnTouchOutside(true);
-
-
-        //Agregar eventos a los botones de los botones del menu flotante
-        btnCambiarEstilo = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.cambiar_estiloMapa);
-        btnAgregarEvento = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.agregarEvento);
-        btnMiUbicacion = (com.github.clans.fab.FloatingActionButton) findViewById(R.id.miUbicacion);
-
-        btnCambiarEstilo.setOnClickListener(this);
-        btnAgregarEvento.setOnClickListener(this);
-        btnMiUbicacion.setOnClickListener(this);*/
-
-
         //cargarSitiosCreados();
+    }
+
+    private void crearAlbumPATH(String planificador)
+    {
+        File album = new File(Environment.getExternalStorageDirectory(), planificador);
+        if(!album.exists())
+        {
+            album.mkdirs();
+        }
+        else
+        {
+            return;
+        }
     }
 
     //private void cargarSitiosCreados(){ }
@@ -188,8 +213,6 @@ public class Main extends AppCompatActivity
             startActivity(mapa);
         } else if (id == R.id.invitation) {
             //Enviar evento por mensaje
-            Intent enviarMensaje = new Intent(Main.this, Enviar_por_Mensaje.class);
-            startActivity(enviarMensaje);
         } else if (id == R.id.contacts) {
             Intent mapa = new Intent(Main.this, Actividades_Mapa.class);
             startActivity(mapa);
@@ -227,25 +250,9 @@ public class Main extends AppCompatActivity
             return;
         }
         mMap.setMyLocationEnabled(true);
-
-        // Add some markers to the map, and add a data object to each marker.
-        mPerth = mMap.addMarker(new MarkerOptions().position(PERTH).title("Perth"));
-        mPerth.setTag(0);
-
-        mSydney = mMap.addMarker(new MarkerOptions()
-                .position(SYDNEY)
-                .title("Sydney"));
-        mSydney.setTag(0);
-
-        mBrisbane = mMap.addMarker(new MarkerOptions()
-                .position(BRISBANE)
-                .title("Brisbane"));
-        mBrisbane.setTag(0);
-
-        // Set a listener for marker click.
-        mMap.setOnMarkerClickListener(this);
-        mMap.setOnMapLongClickListener(this);
         mMap.setOnMapClickListener(this);
+        mMap.setOnMapLongClickListener(this);
+        mMap.setOnMarkerClickListener(this);
         // Add a marker in Sydney and move the camera
         /*LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
@@ -275,68 +282,36 @@ public class Main extends AppCompatActivity
     }
 
     @Override
-    public void onMapLongClick(LatLng latLng) {
+    public void onMapLongClick(final LatLng latLng) {
         /*if (marcador != null) {
             marcador.remove();
         }*/
         //mMap.setMyLocationEnabled(true);
-        marcador = mMap.addMarker(new MarkerOptions().position(latLng).title("Mi ubicación actual")
-                .icon(BitmapDescriptorFactory.fromResource(R.mipmap.amarillo)));
-
-    }
-
-    @Override
-    public void onMapClick(LatLng latLng)
-    {
-
-    }
-
-    @Override
-    public boolean onMarkerClick(Marker marker) {
+        final String[] cadenaName = new String[1];
         final AlertDialog.Builder alert = new AlertDialog.Builder(Main.this);
-
         alert.setTitle("Agregar sitio");
         alert.setMessage("Por favor rellene todos los espacios");
 
         // Set an EditText view to get user input
         Context context = Main.this;
         LinearLayout layout = new LinearLayout(context);
+        layout.setBackgroundColor(Color.TRANSPARENT);
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final EditText inputName = new EditText(context);
         inputName.setHint("Nombre");
         layout.addView(inputName);
 
-        final Spinner categorias = new Spinner(Main.this);
-        //añadir las categorias al spinner
-        layout.addView(categorias);
-
-        final EditText inputNumber = new EditText(context);
-        inputNumber.setHint("Telefono");
-        layout.addView(inputNumber);
-
-        final GridView gridViewImagenes = new GridView(Main.this);
-
-
-        final ImageButton imagenes = new ImageButton(Main.this);
-        imagenes.setImageResource(R.drawable.ic_menu_camera);
-        imagenes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        layout.addView(imagenes);
-
         alert.setView(layout);
-
         alert.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // Guardamos el valor digitado en una variable o lo mostramos en
-                // un TextViews no se lo que se nos ocurra o lo que necesitemos
-                // hacer.
-                String cadenaName = inputName.getText().toString();
-                String cadenaumber = inputNumber.getText().toString();
+                cadenaName[0] = inputName.getText().toString();
+                int n = 1;
+                if(!cadenaName[0].isEmpty())
+                {
+                    crearAlbumSecundario(latLng, cadenaName[0], n);
+                }
+                else{ Toast.makeText(Main.this, "Debe ingresar un nombre!", Toast.LENGTH_SHORT).show(); }
             }
         });
 
@@ -347,14 +322,119 @@ public class Main extends AppCompatActivity
                     }
                 });
         alert.show();
+    }
 
+    private void crearAlbumSecundario(LatLng latLng, String cadena, int n)
+    {
+        String NameSec = cadena;
+        boolean var = true;
+        if(crearAlbum(cadena))
+        {
+            marcador = mMap.addMarker(new MarkerOptions().position(latLng).title(cadena)
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.amarillo)));
+            Toast.makeText(Main.this, "Haz creado un marcador con el nombre: "+cadena, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else
+        {
+            while (var)
+            {
+                if (crearAlbum(cadena+"("+n+")"))
+                {
+                    NameSec = cadena+"("+n+")";
+                    var = false;
+                    marcador = mMap.addMarker(new MarkerOptions().position(latLng).title(cadena)
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.amarillo)));
+                    Toast.makeText(Main.this, "Haz creado un marcador con el nombre: "+cadena+"("+n+")", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    n += 1;
+                }
+            }
+        }
+        DataDB.guardarNombreCarpetaPorTituloMarca(Main.this, NameSec);
+    }
 
+    @Override
+    public void onMapClick(LatLng latLng)
+    {
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+        identificarMarca = marker.getTitle();
+
+        //**************************        CREACION DEL DIALOG       *****************************
+        View view = new Dialog_AgregarInfoSitio().getView();
+        final Dialog alert = new Dialog(Main.this);
+        alert.setTitle("Agregar datos al sitio");
+        alert.setContentView(R.layout.fragment_grid_view_imagenesmarca);
+        alert.show();
         return false;
     }
 
 
-    /**
-     * Clase interna del mapa
-     */
+    /*Crear album en almacenamiento interno*/
+    private boolean crearAlbum(String alb)
+    {
+        File album = new File(Environment.getExternalStorageDirectory()+"/Planificador", alb);
+        if(!album.exists())
+        {
+            album.mkdirs();
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
+    private List<String> cargarImagenes(String path)
+    {
+        File directory = new File(path);
+        List<String> lista = null;
+        if(directory.exists())
+        {
+
+            listFile = directory.listFiles();
+            // Create a String array for FilePathStrings
+            FilePathStrings = new String[listFile.length];
+            // Create a String array for FileNameStrings
+            FileNameStrings = new String[listFile.length];
+
+            for (int i = 0; i < listFile.length; i++) {
+                // Get the path of the image file
+                FilePathStrings[i] = listFile[i].getAbsolutePath();
+                // Get the name image file
+                FileNameStrings[i] = listFile[i].getName();
+                //obtener el nombre del archivo
+                lista.add(listFile[i].getName());
+            }
+            return lista;
+        }
+        return null;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK)
+        {
+            if (requestCode == REQUEST_IMAGE_CAPTURE)
+            {
+                Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
+                imageView.setImageBitmap(cameraImage);
+            }
+        }
+    }
 }

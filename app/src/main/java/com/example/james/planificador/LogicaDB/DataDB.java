@@ -165,10 +165,6 @@ public class DataDB
 
     //******************************************************************************************************************************
 
-
-
-
-
     public static void DeleteData(Context context, String filtro)
     {
         EventosDBHelper mDbHelper = new EventosDBHelper(context);
@@ -179,5 +175,41 @@ public class DataDB
         String[] selectionArgs = { filtro };
         // Issue SQL statement.
         db.delete(EventoContract.FeedEntry.TABLE_NAME, selection, selectionArgs);
+    }
+
+
+
+    //**********************************************        AGREGAR Y ELIMINAR UNA CARPETA          *************************************
+
+    public static void guardarNombreCarpetaPorTituloMarca(Context context, String nombre)
+    {
+        EventosDBHelper mDbHelper = new EventosDBHelper(context);
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+        //agregando los datos a la base de datos
+        ContentValues values = new ContentValues();
+        values.put(EventoContract.NombreCarpeta.NAME_FOLDER,nombre);
+        db.insert(EventoContract.tablaContactos.TABLE_NAME, null, values);
+    }
+
+
+    public static String getNombreCarpeta(Context context, String filtro)
+    {
+        EventosDBHelper mDbHelper = new EventosDBHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String query = "SELECT "+EventoContract.NombreCarpeta.NAME_FOLDER+" FROM " +
+                EventoContract.NombreCarpeta.TABLE_NAME+ " WHERE "+EventoContract.NombreCarpeta.NAME_FOLDER+" = "+"'"+filtro+"'";
+        Cursor cursor = db.rawQuery(query,null);
+        String nombreCarpeta;
+        int size = cursor.getCount();
+        if(cursor.moveToFirst())
+        {
+            do {
+                nombreCarpeta = cursor.getString(0);
+            }while (cursor.moveToNext());
+            return nombreCarpeta;
+        }
+        return null;
     }
 }

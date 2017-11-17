@@ -47,22 +47,26 @@ public class EventoContract
     public static class tablaCategoria implements BaseColumns{
         public static final String TABLE_NAME = "CategoriaSitio";
         public static final String DESCRIP = "descripcion";
-        public static final String ICONO = "Icono";
+        public static final String ICONO_COLOR = "Icono";
 
 
     }
 
-
+    public static class NombreCarpeta implements BaseColumns
+    {
+        public static final String TABLE_NAME = "NombresCarpeta";
+        public static final String NAME_FOLDER = "Nombre";
+    }
 
     public static class SitiosCreados implements BaseColumns{
         public static final String TABLE_NAME = "Sitios";
         public static final String NOMBRE = "Nombre";
         public static final String LONGI = "Longitud";
         public static final String LATI = "Latitud";
-
         public static final String FK_DESCRIP_CATEGORIA = "categoria";
         public static final String TEL = "telefono";
     }
+
     public static class Fotografias implements BaseColumns{
         public static final String TABLE_NAME = "Fotos";
         public static final String NOMBRE = "NombreFoto";

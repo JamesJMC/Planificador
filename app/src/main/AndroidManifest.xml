@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -44,10 +45,6 @@
         <activity
             android:name=".GUI.Actividades_Mapa"
             android:label="@string/title_activity_actividades__mapa" />
-        <activity
-            android:name=".GUI.Enviar_por_Mensaje"
-            android:label="@string/title_activity_enviar_por__mensaje"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".GUI.Ingresar_Evento" />
         <activity android:name=".GUI.Registrar_Sitio" />
         <activity

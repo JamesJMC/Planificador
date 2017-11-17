@@ -53,6 +53,11 @@ public class EventosDBHelper extends SQLiteOpenHelper
                     EventoContract.tablaContactos.CONTACT_NAME + TEXT_TYPE + COMMA_SEP +
                     EventoContract.tablaContactos.NUMBER + TEXT_TYPE + " )";
 
+    private static final String SQL_CREATE_TABLE_NAMES_FOLDER =
+            "CREATE TABLE "+EventoContract.NombreCarpeta.TABLE_NAME + " ("+
+                    EventoContract.NombreCarpeta._ID + " INTEGER PRIMARY KEY," +
+                    EventoContract.NombreCarpeta.NAME_FOLDER + TEXT_TYPE + " )";
+
 
     /*#########################################    BORRAR #############################*/
     private static final String SQL_DELETE_ENTRIES =
@@ -66,6 +71,9 @@ public class EventosDBHelper extends SQLiteOpenHelper
 
     private static final String SQL_DELETE_TABLA_CONTACTOS =
             "DROP TABLE IF EXISTS " + EventoContract.tablaContactos.TABLE_NAME;
+
+    private static final String SQL_DELETE_TABLE_NAMES_FOLDER =
+            "DROP TABLE IF EXISTS " + EventoContract.NombreCarpeta.TABLE_NAME;
 
     //Para acceder a la base de datos, crea una instancia de la subclase de SQLiteOpenHelper:
     //  EventosDBHelper mDbHelper = new EventosDBHelper(getContext());
@@ -82,7 +90,7 @@ public class EventosDBHelper extends SQLiteOpenHelper
         db.execSQL(SQL_CREATE_TABLE_FOTOGRAFIA);
         db.execSQL(SQL_CREATE_TABLE_SITIOSCREADOS);
         db.execSQL(SQL_CREATE_TABLE_CONTACTOS);
-
+        db.execSQL(SQL_CREATE_TABLE_NAMES_FOLDER);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
@@ -93,6 +101,7 @@ public class EventosDBHelper extends SQLiteOpenHelper
         db.execSQL(SQL_DELETE_TABLA_FOTOS);
         db.execSQL(SQL_DELETE_TABLA_SITIOSCREADOS);
         db.execSQL(SQL_DELETE_TABLA_CONTACTOS);
+        db.execSQL(SQL_DELETE_TABLE_NAMES_FOLDER);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion)
