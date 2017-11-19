@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Debug;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -21,7 +22,7 @@ public class VerInfoSistema extends AppCompatActivity {
 
     private final int CONVERT = 1024;
     private ActivityManager activity_man;
-    TextView batterLevel, memoria;
+    TextView batterLevel, memoria, cpu, so;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,9 @@ public class VerInfoSistema extends AppCompatActivity {
 
         memoria = (TextView)findViewById(R.id.textViewMemoria);
         activity_man = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+
+        cpu = (TextView)findViewById(R.id.textViewCPU);
+        so = (TextView)findViewById(R.id.textViewSO);
 
 
     }
@@ -66,6 +70,15 @@ public class VerInfoSistema extends AppCompatActivity {
         mem_size = (mem_info.availMem / (CONVERT * CONVERT));
 
         memoria.setText(String.format("Available memory:\t %.2f Mb", mem_size));
+
+
+        //CPU
+        String PhoneModel = android.os.Build.MODEL;
+        String AndroidVersion = android.os.Build.VERSION.RELEASE + Build.BOARD;
+        so.setText("Version del Sitema: "+ PhoneModel + " (" + AndroidVersion +")");
+
+        //ALMACENAMIENTO INTERNO
+
 
     }
 
