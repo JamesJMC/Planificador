@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,6 +17,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -36,6 +38,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.james.planificador.LogicaDB.DataDB;
@@ -62,11 +65,7 @@ public class Main extends AppCompatActivity
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
-    private Marker mPerth;
-    private Marker mSydney;
-    private Marker mBrisbane;
 
-    GridViewAdapter adapter;
     // Declare variables
     private String[] FilePathStrings;
     private String[] FileNameStrings;
@@ -79,8 +78,16 @@ public class Main extends AppCompatActivity
     private ImageView imageView;
 
     //carpeta de imagenes de todo el proyecto
-    private File nuevaCarpeta;
     public static String identificarMarca;
+
+    private GridViewAdapter mAdapter;
+    private ArrayList<String> taxtVlue;
+    private ArrayList<Integer> imageValue;
+    private DisplayMetrics metrics;
+
+    private GridView gridView;
+    public TextView txtViewTitle;
+    public Typeface tp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +111,17 @@ public class Main extends AppCompatActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
+        //prepareing list
+        /*taxtVlue=gridViewValues.taxtVlue();
+        imageValue=gridViewValues.imageValue();
+
+        metrics = new DisplayMetrics();
+
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        // prepared arraylist and passed it to the Adapter class
+
+        mAdapter = new GridviewAdapter(this,taxtVlue, imageValue, metrics );*/
 
         //CARPETA DEL PROYECTO
         crearAlbumPATH("Planificador");
@@ -333,6 +351,7 @@ public class Main extends AppCompatActivity
             marcador = mMap.addMarker(new MarkerOptions().position(latLng).title(cadena)
                     .icon(BitmapDescriptorFactory.fromResource(R.mipmap.amarillo)));
             Toast.makeText(Main.this, "Haz creado un marcador con el nombre: "+cadena, Toast.LENGTH_SHORT).show();
+            identificarMarca = cadena;
             return;
         }
         else
@@ -343,6 +362,7 @@ public class Main extends AppCompatActivity
                 {
                     NameSec = cadena+"("+n+")";
                     var = false;
+                    identificarMarca = NameSec;
                     marcador = mMap.addMarker(new MarkerOptions().position(latLng).title(cadena)
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.amarillo)));
                     Toast.makeText(Main.this, "Haz creado un marcador con el nombre: "+cadena+"("+n+")", Toast.LENGTH_SHORT).show();
@@ -365,9 +385,8 @@ public class Main extends AppCompatActivity
     @Override
     public boolean onMarkerClick(Marker marker) {
 
-        identificarMarca = marker.getTitle();
-
         //**************************        CREACION DEL DIALOG       *****************************
+        String jsnf = identificarMarca;
         View view = new Dialog_AgregarInfoSitio().getView();
         final Dialog alert = new Dialog(Main.this);
         alert.setTitle("Agregar datos al sitio");

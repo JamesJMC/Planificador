@@ -1,10 +1,14 @@
 package com.example.james.planificador.GUI;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
+import android.os.Debug;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,8 +19,9 @@ import com.example.james.planificador.R;
 
 public class VerInfoSistema extends AppCompatActivity {
 
-
-    TextView batterLevel;
+    private final int CONVERT = 1024;
+    private ActivityManager activity_man;
+    TextView batterLevel, memoria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +30,12 @@ public class VerInfoSistema extends AppCompatActivity {
 
         batterLevel = (TextView) findViewById(R.id.textView6);
 
-
+        memoria = (TextView)findViewById(R.id.textViewMemoria);
+        activity_man = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
 
 
     }
+
 
     public void verInfo(View view){
 
@@ -48,6 +55,17 @@ public class VerInfoSistema extends AppCompatActivity {
         };
         IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         registerReceiver(batteryLevelReceiver, batteryLevelFilter);
+
+        //MEMORIA
+
+        ActivityManager.MemoryInfo mem_info;
+        double mem_size;
+
+        mem_info = new ActivityManager.MemoryInfo();
+        activity_man.getMemoryInfo(mem_info);
+        mem_size = (mem_info.availMem / (CONVERT * CONVERT));
+
+        memoria.setText(String.format("Available memory:\t %.2f Mb", mem_size));
 
     }
 

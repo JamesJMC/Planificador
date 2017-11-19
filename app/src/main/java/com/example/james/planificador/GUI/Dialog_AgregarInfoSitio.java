@@ -25,7 +25,7 @@ public class Dialog_AgregarInfoSitio extends Fragment {
     private EditText telefonoSitio;
     private ImageButton foto, video;
     private GridView gridViewGaleria;
-    View view;
+    View view = getView();
     String nombreSitio;
 
     @Override
@@ -40,10 +40,10 @@ public class Dialog_AgregarInfoSitio extends Fragment {
         foto = (ImageButton)view.findViewById(R.id.tomarFoto);
         video = (ImageButton)view.findViewById(R.id.tomarVideo);
         gridViewGaleria = (GridView)view.findViewById(R.id.gridviewImagenes);
-
+        nombreSitio = Main.identificarMarca;
         titulo.setText(nombreSitio);
 
-        nombreSitio = Main.identificarMarca;
+
         foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,7 +58,6 @@ public class Dialog_AgregarInfoSitio extends Fragment {
         Toast.makeText(getContext(),"nombre del sitio: "+nombreSitio,Toast.LENGTH_SHORT);
     }
 
-    @Nullable
     @Override
     public View getView() {
         return view;
