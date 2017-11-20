@@ -8,8 +8,10 @@ import android.content.IntentFilter;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Debug;
+import android.os.Environment;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.StatFs;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,11 +20,13 @@ import android.widget.TextView;
 
 import com.example.james.planificador.R;
 
+import java.io.File;
+
 public class VerInfoSistema extends AppCompatActivity {
 
     private final int CONVERT = 1024;
     private ActivityManager activity_man;
-    TextView batterLevel, memoria, cpu, so;
+    TextView batterLevel, memoria, cpu, so, memoriaInterna;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,7 @@ public class VerInfoSistema extends AppCompatActivity {
 
         cpu = (TextView)findViewById(R.id.textViewCPU);
         so = (TextView)findViewById(R.id.textViewSO);
-
+        memoriaInterna = (TextView)findViewById(R.id.textViewMemInt);
 
     }
 
@@ -74,14 +78,22 @@ public class VerInfoSistema extends AppCompatActivity {
 
         //CPU
         String PhoneModel = android.os.Build.MODEL;
-        String AndroidVersion = android.os.Build.VERSION.RELEASE + Build.BOARD;
+        String AndroidVersion = android.os.Build.VERSION.RELEASE;
         so.setText("Version del Sitema: "+ PhoneModel + " (" + AndroidVersion +")");
 
         //ALMACENAMIENTO INTERNO
-
+        String espacioDisponible = String.valueOf(megabytesAvailable());
+        memoriaInterna.setText("Almacenamiento interno disponible: "+espacioDisponible+" Gb");
 
     }
 
+
+    public static float megabytesAvailable() {
+        File f = Environment.getExternalStorageDirectory();
+        StatFs stat = new StatFs(f.getPath());
+        long bytesAvailable = (long)stat.getBlockSize() * (long)stat.getAvailableBlocks();
+        return bytesAvailable / (1024.1f * 1024.1f * 1024.1f);
+    }
 
 }
 

@@ -11,7 +11,9 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -51,7 +53,11 @@
             android:name=".GUI.MenuPrincipal"
             android:label="@string/title_activity_menu_principal"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".GUI.VerInfoSistema"></activity>
+        <activity android:name=".GUI.VerInfoSistema" />
+        <activity
+            android:name=".GUI.DatosClimaticos"
+            android:label="@string/title_activity_datos_climaticos"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

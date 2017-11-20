@@ -7,18 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -28,17 +20,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.james.planificador.LogicaDB.DataDB;
@@ -54,22 +38,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
 
 public class Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, View.OnClickListener,
         GoogleMap.OnMapLongClickListener, GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener {
 
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
-
     // Declare variables
-    private String[] FilePathStrings;
-    private String[] FileNameStrings;
-    private File[] listFile;
+
 
     private GoogleMap mMap;
     static int contadorMapa = 0;
@@ -80,14 +56,6 @@ public class Main extends AppCompatActivity
     //carpeta de imagenes de todo el proyecto
     public static String identificarMarca;
 
-    private GridViewAdapter mAdapter;
-    private ArrayList<String> taxtVlue;
-    private ArrayList<Integer> imageValue;
-    private DisplayMetrics metrics;
-
-    private GridView gridView;
-    public TextView txtViewTitle;
-    public Typeface tp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -235,6 +203,8 @@ public class Main extends AppCompatActivity
             Intent mapa = new Intent(Main.this, Actividades_Mapa.class);
             startActivity(mapa);
         } else if (id == R.id.info) {
+            Intent clima = new Intent(Main.this, DatosClimaticos.class);
+            startActivity(clima);
 
         } else if (id == R.id.cerrar) {
 
@@ -408,52 +378,6 @@ public class Main extends AppCompatActivity
         else
         {
             return false;
-        }
-    }
-
-    private List<String> cargarImagenes(String path)
-    {
-        File directory = new File(path);
-        List<String> lista = null;
-        if(directory.exists())
-        {
-
-            listFile = directory.listFiles();
-            // Create a String array for FilePathStrings
-            FilePathStrings = new String[listFile.length];
-            // Create a String array for FileNameStrings
-            FileNameStrings = new String[listFile.length];
-
-            for (int i = 0; i < listFile.length; i++) {
-                // Get the path of the image file
-                FilePathStrings[i] = listFile[i].getAbsolutePath();
-                // Get the name image file
-                FileNameStrings[i] = listFile[i].getName();
-                //obtener el nombre del archivo
-                lista.add(listFile[i].getName());
-            }
-            return lista;
-        }
-        return null;
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-
-        }
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK)
-        {
-            if (requestCode == REQUEST_IMAGE_CAPTURE)
-            {
-                Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
-                imageView.setImageBitmap(cameraImage);
-            }
         }
     }
 }
