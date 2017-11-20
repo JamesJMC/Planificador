@@ -47,7 +47,6 @@
         <activity
             android:name=".GUI.Actividades_Mapa"
             android:label="@string/title_activity_actividades__mapa" />
-        <activity android:name=".GUI.Ingresar_Evento" />
         <activity android:name=".GUI.Registrar_Sitio" />
         <activity
             android:name=".GUI.MenuPrincipal"

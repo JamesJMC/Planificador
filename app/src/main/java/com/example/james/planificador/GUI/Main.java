@@ -115,8 +115,8 @@ public class Main extends AppCompatActivity
     //private void cargarSitiosCreados(){ }
 
     private void agregarEvento() {
-        Intent eventoNuevo = new Intent(Main.this, Ingresar_Evento.class);
-        startActivity(eventoNuevo);
+        //Intent eventoNuevo = new Intent(Main.this, Ingresar_Evento.class);
+        //startActivity(eventoNuevo);
     }
 
     @Override

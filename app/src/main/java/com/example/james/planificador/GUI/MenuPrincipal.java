@@ -133,13 +133,13 @@ public class MenuPrincipal extends AppCompatActivity {
             //return PlaceholderFragment.newInstance(position + 1);
             switch (position) {
                 case 0:
-                    IngresarEvento ingresarEvento = new IngresarEvento();
+                    IngresarEvento ingresarEvento = new IngresarEvento();//para agregar categorias
                     return ingresarEvento;
                 case 1:
-                    VerEventos verEventos = new VerEventos();
+                    VerEventos verEventos = new VerEventos();//para ver categorias
                     return verEventos;
                 case 2:
-                    Contactos contactos = new Contactos();
+                    Contactos contactos = new Contactos();//para eliminar las categorias
                     return contactos;
             }
             return null;
@@ -155,11 +155,11 @@ public class MenuPrincipal extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "Agregar Evento";
+                    return "Agregar";
                 case 1:
-                    return "Ver Eventos";
+                    return "Editar";
                 case 2:
-                    return "Contactos";
+                    return "Eliminar";
             }
             return null;
         }

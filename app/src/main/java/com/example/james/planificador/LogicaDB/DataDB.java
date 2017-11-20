@@ -115,7 +115,8 @@ public class DataDB
         EventosDBHelper mDbHelper = new EventosDBHelper(context);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        String query = "SELECT "+EventoContract.tablaContactos.CONTACT_NAME+ "," + EventoContract.tablaContactos.NUMBER + " FROM " + EventoContract.tablaContactos.TABLE_NAME;
+        String query = "SELECT "+EventoContract.tablaContactos.CONTACT_NAME+ ","
+                + EventoContract.tablaContactos.NUMBER + " FROM " + EventoContract.tablaContactos.TABLE_NAME;
         Cursor cursor = db.rawQuery(query,null);
         ArrayList<ArrayList<String>> listaContactos = new ArrayList<ArrayList<String>>();
         int size = cursor.getCount();
@@ -212,4 +213,75 @@ public class DataDB
         }
         return null;
     }
+
+
+    // ***************************************          CATEGORIAS          ********************************************************
+
+    public static void setCategoria(Context context, String nombreDes, String color)
+    {
+        EventosDBHelper mDbHelper = new EventosDBHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(EventoContract.tablaCategoria.DESCRIP,nombreDes);
+        values.put(EventoContract.tablaCategoria.ICONO_COLOR,color);
+        db.insert(EventoContract.tablaCategoria.TABLE_NAME, null, values);
+    }
+
+
+    public static void editarCategoria(Context context, int numCol, String cadenaCambio, String cadena)
+    {
+        EventosDBHelper mDbHelper = new EventosDBHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        ContentValues valores = new ContentValues();
+        if(numCol == 1)//cambiar el valor de la descripcion
+        {
+            valores.put(EventoContract.tablaCategoria.DESCRIP,cadenaCambio);
+            db.update(EventoContract.tablaCategoria.TABLE_NAME,valores,
+                    "WHERE "+EventoContract.tablaCategoria.DESCRIP+" = "+"'"+cadena+"'", null);
+        }else if (numCol == 2)//cambiar el color del color de la categoria
+        {
+            valores.put(EventoContract.tablaCategoria.ICONO_COLOR,cadenaCambio);
+            db.update(EventoContract.tablaCategoria.TABLE_NAME,valores,
+                    "WHERE "+EventoContract.tablaCategoria.ICONO_COLOR+" = "+"'"+cadena+"'", null);
+        }
+    }
+
+    public static void eliminaCategoria(Context context, String filtro)
+    {
+        EventosDBHelper mDbHelper = new EventosDBHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        //Eliminando la categoria
+        String selection = EventoContract.tablaCategoria.DESCRIP + " LIKE ?";
+        String[] selectionArgs = {filtro};
+        db.delete(EventoContract.tablaContactos.TABLE_NAME, selection, selectionArgs);
+    }
+
+
+    //          OBTENER TODAS LAS CATEGORIAS
+    public static ArrayList<ArrayList<String>> getCategoria(Context context)
+    {
+        EventosDBHelper mDbHelper = new EventosDBHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String query = "SELECT "+EventoContract.tablaCategoria.DESCRIP+ "," + EventoContract.tablaCategoria.ICONO_COLOR
+                + " FROM " + EventoContract.tablaCategoria.TABLE_NAME;
+        Cursor cursor = db.rawQuery(query,null);
+        ArrayList<ArrayList<String>> listaCategoria = new ArrayList<ArrayList<String>>();
+        int size = cursor.getCount();
+        if(cursor.moveToFirst())
+        {
+            do {//recorrer las filas de las categorias en la base de datos
+                ArrayList<String> contacto = new ArrayList<String>();
+                contacto.add(cursor.getString(0));
+                contacto.add(cursor.getString(1));
+                listaCategoria.add(contacto);
+            }while (cursor.moveToNext());
+            return listaCategoria;
+        }
+        return null;
+    }
+
 }

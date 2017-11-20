@@ -1,6 +1,7 @@
 package com.example.james.planificador.GUI;
 
 import android.content.Context;
+import android.media.ImageWriter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -10,8 +11,8 @@ import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,9 +28,12 @@ public class VerEventos extends Fragment {
 
     private Spinner eventosSp;
     private TextView mostrarEvento;
-    private ImageButton mostrarEV, enviarMsjs;
+    //private ImageButton colorIconoCat;
     String num;
     String eventoPlano = "Titulo: ";
+
+    ArrayList<ArrayList<String>> categorias = new ArrayList<ArrayList<String>>();
+    ArrayList<String> listaNombreEventos = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,26 +44,22 @@ public class VerEventos extends Fragment {
         //INICIALIZAR LOS VALORES
         eventosSp = (Spinner)view.findViewById(R.id.spinnerTitulosCons);
         mostrarEvento = (TextView)view.findViewById(R.id.textViewInfoEvento);
-        mostrarEV = (ImageButton)view.findViewById(R.id.ver);
-        enviarMsjs = (ImageButton)view.findViewById(R.id.envMSjs);
+        //colorIconoCat = (ImageButton) view.findViewById(R.id.iconoColor);
 
-        //CARGAR EVENTOS
-        cargarEventos();
 
-        //BOTON MPSTRAR
-        mostrarEV.setOnClickListener(new View.OnClickListener() {
+        //CARGAR CATEGORIAS
+        cargarCategrias();
+
+
+        eventosSp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                buscarInfoEvento();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getActivity(),"Posicion: "+i,Toast.LENGTH_SHORT).show();
             }
-        });
 
-        enviarMsjs.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(num, null, eventoPlano, null, null);
-                Toast.makeText(getActivity(), "Mensaje enviado", Toast.LENGTH_SHORT).show();
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
 
@@ -68,25 +68,25 @@ public class VerEventos extends Fragment {
 
 
     //**********************************************        AGREGAR EVENTOS AL SPINNER      *************************************************
-    private void cargarEventos()
+    private void cargarCategrias()
     {
-        ArrayList<ArrayList<String>> contacts = DataDB.getDataEvento(getContext());
-        ArrayList<String> listaNombreEventos = new ArrayList<>();
+        categorias = DataDB.getCategoria(getContext());
         int x = 0;
 
         //obtener solo nombres de la base de datos
-        if (!(contacts == null))
+        if (!(categorias == null))
         {
-            if (!contacts.isEmpty())
+            if (!categorias.isEmpty())
             {
-                int i = contacts.size();
+                int i = categorias.size();
                 while (x < i) {
-                    listaNombreEventos.add(contacts.get(x).get(0));
+                    listaNombreEventos.add(categorias.get(x).get(0));
                     x++;
                 }
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,listaNombreEventos);
-            eventosSp.setAdapter(adapter);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            eventosSp.setAdapter(adapter);//las categorias => eventosSp
         }
         else{
             Toast.makeText(getActivity(),"Agregue un contacto",Toast.LENGTH_SHORT).show();
@@ -96,49 +96,5 @@ public class VerEventos extends Fragment {
 
     //***********************************************       BUSCAR Y MOSTRAR EL EVENTO      *************************************************
 
-    public void buscarInfoEvento()
-    {
-        ArrayList<String> fila = DataDB.getDataEventoFila(getContext(),eventosSp.getSelectedItem().toString());
-        if (fila == null)
-        {
-            Toast.makeText(getActivity(),"No se encontró ningún evento con este nombre",Toast.LENGTH_LONG).show();
-            return;
-        }
-        int c = fila.size();
-        int i = 0;
 
-        while (i<c)
-        {
-            switch (i)
-            {
-                case 0:
-                    eventoPlano+=fila.get(i)+"\n"+"Fecha de inicio: ";
-                    break;
-                case 1:
-                    eventoPlano+=fila.get(i)+"\n"+"Fecha final: ";
-                    break;
-                case 2:
-                    eventoPlano+=fila.get(i)+"\n"+"Hora de inicio: ";
-                    break;
-                case 3:
-                    eventoPlano+=fila.get(i)+"\n"+"Hora final: ";
-                    break;
-                case 4:
-                    eventoPlano+=fila.get(i)+"\n"+"Ubicación: ";
-                    break;
-                case 5:
-                    eventoPlano+=fila.get(i)+"\n"+"Descripción: ";
-                    break;
-                case 6:
-                    eventoPlano+=fila.get(i)+"\n"+"Participante: ";
-                    break;
-                case 7:
-                    num = DataDB.getDataContactoFila(getContext(),fila.get(i-1));
-                    eventoPlano+=fila.get(i)+"\n"+"Número de telefono: "+num;
-                    break;
-            }
-            i++;
-        }
-        mostrarEvento.setText(eventoPlano);
-    }
 }

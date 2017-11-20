@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.SimpleTimeZone;
+
 /**
  * Created by James on 07/09/2017.
  */
@@ -11,7 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class EventosDBHelper extends SQLiteOpenHelper
 {
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "FeedReader.db";
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
@@ -58,6 +60,12 @@ public class EventosDBHelper extends SQLiteOpenHelper
                     EventoContract.NombreCarpeta._ID + " INTEGER PRIMARY KEY," +
                     EventoContract.NombreCarpeta.NAME_FOLDER + TEXT_TYPE + " )";
 
+    private static final String SQL_CREATE_TABLE_CATEGORIAS =
+            "CREATE TABLE "+EventoContract.tablaCategoria.TABLE_NAME + " ("+
+                    EventoContract.tablaCategoria._ID + " INTEGER PRIMARY KEY," +
+                    EventoContract.tablaCategoria.DESCRIP  + TEXT_TYPE + COMMA_SEP +
+                    EventoContract.tablaCategoria.ICONO_COLOR + TEXT_TYPE + " )";
+
 
     /*#########################################    BORRAR #############################*/
     private static final String SQL_DELETE_ENTRIES =
@@ -75,6 +83,9 @@ public class EventosDBHelper extends SQLiteOpenHelper
     private static final String SQL_DELETE_TABLE_NAMES_FOLDER =
             "DROP TABLE IF EXISTS " + EventoContract.NombreCarpeta.TABLE_NAME;
 
+    private static final String SQL_DELETE_TABLE_CATEGORIAS =
+            "DROP TABLE IF EXISTS " + EventoContract.tablaCategoria.TABLE_NAME;
+
     //Para acceder a la base de datos, crea una instancia de la subclase de SQLiteOpenHelper:
     //  EventosDBHelper mDbHelper = new EventosDBHelper(getContext());
 
@@ -91,6 +102,7 @@ public class EventosDBHelper extends SQLiteOpenHelper
         db.execSQL(SQL_CREATE_TABLE_SITIOSCREADOS);
         db.execSQL(SQL_CREATE_TABLE_CONTACTOS);
         db.execSQL(SQL_CREATE_TABLE_NAMES_FOLDER);
+        db.execSQL(SQL_CREATE_TABLE_CATEGORIAS);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
@@ -102,6 +114,7 @@ public class EventosDBHelper extends SQLiteOpenHelper
         db.execSQL(SQL_DELETE_TABLA_SITIOSCREADOS);
         db.execSQL(SQL_DELETE_TABLA_CONTACTOS);
         db.execSQL(SQL_DELETE_TABLE_NAMES_FOLDER);
+        db.execSQL(SQL_DELETE_TABLE_CATEGORIAS);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion)

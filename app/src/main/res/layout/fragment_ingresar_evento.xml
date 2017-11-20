@@ -12,119 +12,26 @@
         android:background="#ffffff"
         android:orientation="vertical">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
 
-            <EditText
-                android:id="@+id/nombreEvento"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:hint="Titulo" />
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/categoria"
+                android:layout_marginTop="40dp"
+                android:gravity="center"/>
         </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Desde:"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="130dp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <EditText
-                android:id="@+id/fechaDesde"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:hint="dd/mm/yy"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_weight="0.55"/>
-
-            <EditText
-                android:id="@+id/horaDesde"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:hint="hh/mm"
-                android:layout_weight="0.35" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Hasta:"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="130dp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <EditText
-                android:id="@+id/fechaHasta"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:hint="dd/mm/yy"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_weight="0.55" />
-
-            <EditText
-                android:id="@+id/horaHasta"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:hint="hh/mm"
-                android:layout_weight="0.35" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/ubicacion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:hint="Ubicacion"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="40dp">
             <EditText
                 android:id="@+id/descripcion"
                 android:layout_width="match_parent"
@@ -138,15 +45,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <Spinner
                 android:id="@+id/contactosSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
-                android:hint="Participante">
-            </Spinner>
+                android:hint="Participante"></Spinner>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

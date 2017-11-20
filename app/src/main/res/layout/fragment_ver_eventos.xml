@@ -20,13 +20,15 @@
 
             <TextView
                 android:id="@+id/textViewTitulo"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="4dp"
-                android:layout_marginTop="5dp"
-                android:layout_weight="0.12"
-                android:text="Titulo del evento: " />
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="0.79"
+                android:fontFamily="monospace"
+                android:text="Categoria:"
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -39,15 +41,9 @@
                 <Spinner
                     android:id="@+id/spinnerTitulosCons"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="35dp"
                     android:layout_weight="0.75" />
 
-                <ImageButton
-                    android:id="@+id/ver"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:src="@android:drawable/ic_menu_view" />
             </LinearLayout>
         </LinearLayout>
 
@@ -63,33 +59,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/textViewInfoEvento"
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textViewInfoEvento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="sans-serif"
+                        android:text=""
+                        android:textSize="18sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:id="@+id/textViewColor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="Color de la categoria" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
             </ScrollView>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                android:id="@+id/envMSjs"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="300dp"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/transparent"
-                android:backgroundTint="@color/colorPrimary"
-                android:src="@drawable/ic_message_black_24dp"
-                android:tint="@color/colorPrimaryDark" />
-        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>
