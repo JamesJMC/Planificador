@@ -56,6 +56,9 @@ public class Main extends AppCompatActivity
     //carpeta de imagenes de todo el proyecto
     public static String identificarMarca;
 
+    //VARIABLE GLOBAL
+    public static Global globalObject;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,6 +202,9 @@ public class Main extends AppCompatActivity
             startActivity(mapa);
         } else if (id == R.id.invitation) {
             //Enviar evento por mensaje
+            Intent cambioEstilo = new Intent(Main.this, Cambio_Estilo.class);
+            startActivity(cambioEstilo);
+
         } else if (id == R.id.contacts) {
             Intent mapa = new Intent(Main.this, Actividades_Mapa.class);
             startActivity(mapa);
@@ -276,7 +282,7 @@ public class Main extends AppCompatActivity
         }*/
         //mMap.setMyLocationEnabled(true);
 
-
+        globalObject = new Global(latLng,"","","");
         Intent agregarSitio = new Intent(Main.this, AgregarInfoSitio.class);
         startActivity(agregarSitio);
     }

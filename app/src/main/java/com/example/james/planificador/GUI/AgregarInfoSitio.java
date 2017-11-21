@@ -44,6 +44,8 @@ public class AgregarInfoSitio extends AppCompatActivity implements View.OnClickL
     public TextView txtViewTitle;
     public Typeface tp;
 
+    Global object = Main.globalObject;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
