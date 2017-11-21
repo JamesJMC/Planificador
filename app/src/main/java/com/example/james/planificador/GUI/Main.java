@@ -275,41 +275,10 @@ public class Main extends AppCompatActivity
             marcador.remove();
         }*/
         //mMap.setMyLocationEnabled(true);
-        final String[] cadenaName = new String[1];
-        final AlertDialog.Builder alert = new AlertDialog.Builder(Main.this);
-        alert.setTitle("Agregar sitio");
-        alert.setMessage("Por favor rellene todos los espacios");
 
-        // Set an EditText view to get user input
-        Context context = Main.this;
-        LinearLayout layout = new LinearLayout(context);
-        layout.setBackgroundColor(Color.TRANSPARENT);
-        layout.setOrientation(LinearLayout.VERTICAL);
 
-        final EditText inputName = new EditText(context);
-        inputName.setHint("Nombre");
-        layout.addView(inputName);
-
-        alert.setView(layout);
-        alert.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                cadenaName[0] = inputName.getText().toString();
-                int n = 1;
-                if(!cadenaName[0].isEmpty())
-                {
-                    crearAlbumSecundario(latLng, cadenaName[0], n);
-                }
-                else{ Toast.makeText(Main.this, "Debe ingresar un nombre!", Toast.LENGTH_SHORT).show(); }
-            }
-        });
-
-        alert.setNegativeButton("Cancelar",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Canceled.
-                    }
-                });
-        alert.show();
+        Intent agregarSitio = new Intent(Main.this, AgregarInfoSitio.class);
+        startActivity(agregarSitio);
     }
 
     private void crearAlbumSecundario(LatLng latLng, String cadena, int n)
@@ -356,12 +325,12 @@ public class Main extends AppCompatActivity
     public boolean onMarkerClick(Marker marker) {
 
         //**************************        CREACION DEL DIALOG       *****************************
-        String jsnf = identificarMarca;
+        /*String jsnf = identificarMarca;
         View view = new Dialog_AgregarInfoSitio().getView();
         final Dialog alert = new Dialog(Main.this);
         alert.setTitle("Agregar datos al sitio");
         alert.setContentView(R.layout.fragment_grid_view_imagenesmarca);
-        alert.show();
+        alert.show();*/
         return false;
     }
 

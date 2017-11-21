@@ -1,24 +1,19 @@
 package com.example.james.planificador.GUI;
 
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.example.james.planificador.R;
 
@@ -26,8 +21,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class Dialog_AgregarInfoSitio extends Fragment implements View.OnClickListener {
+public class AgregarInfoSitio extends AppCompatActivity implements View.OnClickListener{
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     static final int RESULT_OK = 1;
@@ -36,7 +30,6 @@ public class Dialog_AgregarInfoSitio extends Fragment implements View.OnClickLis
     private Spinner categorias;
     private EditText telefonoSitio;
     private ImageButton foto, video;
-    View view = getView();
     String nombreSitio;
     private String[] FilePathStrings;
     private String[] FileNameStrings;
@@ -51,33 +44,25 @@ public class Dialog_AgregarInfoSitio extends Fragment implements View.OnClickLis
     public TextView txtViewTitle;
     public Typeface tp;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_grid_view_imagenesmarca, container, false);
 
-        titulo = (TextView)view.findViewById(R.id.nameSitio);
-        categorias = (Spinner)view.findViewById(R.id.spinCategoria);
-        telefonoSitio = (EditText)view.findViewById(R.id.telSitio);
-        foto = (ImageButton)view.findViewById(R.id.tomarFoto);
-        video = (ImageButton)view.findViewById(R.id.tomarVideo);
-        gridViewGaleria = (GridView)view.findViewById(R.id.gridviewImagenes);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_agregar_info_sitio);
+
+        titulo = (TextView)findViewById(R.id.nameSitio);
+        categorias = (Spinner)findViewById(R.id.spinCategoria);
+        telefonoSitio = (EditText)findViewById(R.id.telSitio);
+        foto = (ImageButton)findViewById(R.id.tomarFoto);
+        video = (ImageButton)findViewById(R.id.tomarVideo);
+        gridViewGaleria = (GridView)findViewById(R.id.gridviewImagenes);
         nombreSitio = Main.identificarMarca;
         titulo.setText(nombreSitio);
 
 
         foto.setOnClickListener(this);
-        return view;
-    }
+        video.setOnClickListener(this);
 
-    private void mandar() {
-        Toast.makeText(getContext(),"nombre del sitio: "+nombreSitio,Toast.LENGTH_SHORT);
-    }
-
-    @Override
-    public View getView() {
-        return view;
     }
 
     @Override
@@ -86,7 +71,6 @@ public class Dialog_AgregarInfoSitio extends Fragment implements View.OnClickLis
         switch (id)
         {
             case R.id.tomarFoto:
-                mandar();
                 break;
             case R.id.tomarVideo:
                 break;
@@ -123,7 +107,7 @@ public class Dialog_AgregarInfoSitio extends Fragment implements View.OnClickLis
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(this.getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 
         }

@@ -56,7 +56,8 @@
         <activity
             android:name=".GUI.DatosClimaticos"
             android:label="@string/title_activity_datos_climaticos"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".GUI.AgregarInfoSitio"></activity>
     </application>
 
 </manifest>

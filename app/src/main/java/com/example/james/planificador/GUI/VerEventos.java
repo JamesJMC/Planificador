@@ -89,22 +89,10 @@ public class VerEventos extends Fragment {
         });
 
 
-        colorSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                colorCambio.setText(colorSpin.getItemAtPosition(i).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                colorCambio.setText(colocito);
-            }
-        });
-
-
         saveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ponerColor();
                 DataDB.editarCategoria(getContext(),descCat.getText().toString(),colorCambio.getText().toString(),des);
                 Toast.makeText(getActivity(),"Los cambios se han hecho exitosamente!",Toast.LENGTH_SHORT).show();
                 cargarCategrias();
@@ -116,10 +104,27 @@ public class VerEventos extends Fragment {
         return view;
     }
 
+    private void ponerColor()
+    {
+        colorSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                colorCambio.setText(colorSpin.getItemAtPosition(i).toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                colorCambio.setText(colocito);
+            }
+        });
+    }
+
 
     //**********************************************        AGREGAR EVENTOS AL SPINNER      *************************************************
     private void cargarCategrias()
     {
+        categorias = new ArrayList<ArrayList<String>>();
+        listaNombreEventos = new ArrayList<>();
         categorias = DataDB.getCategoria(getContext());
         int x = 0;
 
