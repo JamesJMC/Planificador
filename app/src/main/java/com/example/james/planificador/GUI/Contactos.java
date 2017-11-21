@@ -35,9 +35,8 @@ public class Contactos extends Fragment {
 
     private ExpandableListView listView;
     private ListaExpandible listAdapter;
-    private List<String> listaNombreContactos;
+    private List<String> listaCategorias;
     private HashMap<String,List<String>> listHashMap;
-    private ImageButton imageButtonAddContacto;
     private String nombreC,numeroC;
 
     Dialog dialogo;
@@ -57,24 +56,12 @@ public class Contactos extends Fragment {
                 popUpMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-
                         int id = item.getItemId();
-                        switch (id)
-                        {
-                            case R.id.llamar:
-                                String numero = listView.getItemAtPosition(i).toString();
-                                Intent llamarContacto = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+numero));
-                                startActivity(llamarContacto);
-                                Toast.makeText(getActivity(),"Numero"+ numero,Toast.LENGTH_SHORT).show();
-                                break;
-                            case R.id.Eliminar:
-                                String nombreCo = listView.getItemAtPosition(i).toString();
-                                DataDB.eliminarContacto(getContext(),nombreCo);
-                                Toast.makeText(getActivity(),"El contacto "+" '"+nombreCo+"' se ha eliminado",Toast.LENGTH_SHORT).show();
-                                iniitData();
-                                setAdaptador();//84508052 - 85967124 - 88025070
-                                break;
-                        }
+                        String nombreCo = listView.getItemAtPosition(i).toString();
+                        DataDB.eliminaCategoria(getContext(),nombreCo);
+                        Toast.makeText(getActivity(),"La categoría "+" '"+nombreCo+"' se ha eliminado",Toast.LENGTH_SHORT).show();
+                        iniitData();
+                        setAdaptador();
                         return true;
                     }
                 });
@@ -86,52 +73,6 @@ public class Contactos extends Fragment {
         setAdaptador();
 
 
-
-        //darle funcion al
-        imageButtonAddContacto = (ImageButton)view.findViewById(R.id.addContact);
-        imageButtonAddContacto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-
-                alert.setTitle("Agregar contacto");
-                alert.setMessage("Por favor rellene todos los espacios");
-
-                // Set an EditText view to get user input
-                Context context = getContext();
-                LinearLayout layout = new LinearLayout(context);
-                layout.setOrientation(LinearLayout.VERTICAL);
-
-                final EditText inputName = new EditText(context);
-                inputName.setHint("Nombre");
-                layout.addView(inputName);
-
-                final EditText inputNumber = new EditText(context);
-                inputNumber.setHint("Número");
-                layout.addView(inputNumber);
-
-                alert.setView(layout);
-
-                alert.setPositiveButton("Agregar", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Guardamos el valor digitado en una variable o lo mostramos en
-                        // un TextViews no se lo que se nos ocurra o lo que necesitemos
-                        // hacer.
-                        String cadenaName = inputName.getText().toString();
-                        String cadenaumber = inputNumber.getText().toString();
-                        agregarContactoDB(cadenaName, cadenaumber);
-                    }
-                });
-
-                alert.setNegativeButton("Cancelar",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                // Canceled.
-                            }
-                        });
-                alert.show();
-            }
-        });
 
 
         return view;
@@ -151,9 +92,9 @@ public class Contactos extends Fragment {
     //HACER LA LISTA DE LOS CONTACTOS
     private void setAdaptador()
     {
-        if(!listaNombreContactos.isEmpty())
+        if(!listaCategorias.isEmpty())
         {
-            listAdapter = new ListaExpandible(getContext(),listaNombreContactos,listHashMap);
+            listAdapter = new ListaExpandible(getContext(),listaCategorias,listHashMap);
             listView.setAdapter(listAdapter);
         }
     }
@@ -167,23 +108,23 @@ public class Contactos extends Fragment {
     private void iniitData()
     {
         //arreglo con todos los contactos y los numeros [ [ [] , [] ], ...]
-        ArrayList<ArrayList<String>> contacts = DataDB.getContactos(getContext());
-        listaNombreContactos = new ArrayList<>();
+        ArrayList<ArrayList<String>> categorias = DataDB.getCategoria(getContext());
+        listaCategorias = new ArrayList<>();
         listHashMap = new HashMap<>();
 
         int x = 0;
 
         //obtener nombres y numeros de la base de datos
-        if (!(contacts == null))
+        if (!(categorias == null))
         {
-            if (!contacts.isEmpty())
+            if (!categorias.isEmpty())
             {
-                int i = contacts.size();
+                int i = categorias.size();
                 while (x < i) {
-                    listaNombreContactos.add(contacts.get(x).get(0));
+                    listaCategorias.add(categorias.get(x).get(0));
                     List<String> numeros = new ArrayList<String>();
-                    numeros.add(contacts.get(x).get(1));
-                    listHashMap.put(listaNombreContactos.get(x), numeros);
+                    numeros.add(categorias.get(x).get(1));
+                    listHashMap.put(listaCategorias.get(x), numeros);
                     x++;
                 }
             }

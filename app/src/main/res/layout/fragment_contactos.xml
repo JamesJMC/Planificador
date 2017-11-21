@@ -23,18 +23,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Contactos"
-                android:layout_weight="0.2"/>
-
-            <ImageButton
-                android:id="@+id/addContact"
-                style="@style/Widget.AppCompat.ImageButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_weight="0.99"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_addcontact" />
+                android:layout_weight="0.2"
+                android:fontFamily="monospace"
+                android:text="Categorias"
+                android:textSize="20sp" />
 
         </LinearLayout>
 

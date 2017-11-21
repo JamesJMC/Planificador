@@ -229,23 +229,25 @@ public class DataDB
     }
 
 
-    public static void editarCategoria(Context context, int numCol, String cadenaCambio, String cadena)
+    public static void editarCategoria(Context context, String cadenaDesc, String cadenaColor, String cadena)
     {
         EventosDBHelper mDbHelper = new EventosDBHelper(context);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         ContentValues valores = new ContentValues();
-        if(numCol == 1)//cambiar el valor de la descripcion
-        {
-            valores.put(EventoContract.tablaCategoria.DESCRIP,cadenaCambio);
-            db.update(EventoContract.tablaCategoria.TABLE_NAME,valores,
-                    "WHERE "+EventoContract.tablaCategoria.DESCRIP+" = "+"'"+cadena+"'", null);
-        }else if (numCol == 2)//cambiar el color del color de la categoria
-        {
-            valores.put(EventoContract.tablaCategoria.ICONO_COLOR,cadenaCambio);
-            db.update(EventoContract.tablaCategoria.TABLE_NAME,valores,
-                    "WHERE "+EventoContract.tablaCategoria.ICONO_COLOR+" = "+"'"+cadena+"'", null);
-        }
+
+
+        //      ACTUALIZAR LOS DOS CAMPOS DE LAS CATEGORIAS
+        valores.put(EventoContract.tablaCategoria.DESCRIP,cadenaDesc);
+        valores.put(EventoContract.tablaCategoria.ICONO_COLOR,cadenaColor);
+        String actualizar = "UPDATE "+EventoContract.tablaCategoria.TABLE_NAME+ " SET "
+                +EventoContract.tablaCategoria.DESCRIP+ " = "+"'"+cadenaDesc+"' WHERE "
+                +EventoContract.tablaCategoria.DESCRIP + " = '"+cadena+"';";
+        String actualizar2 = "UPDATE "+EventoContract.tablaCategoria.TABLE_NAME+ " SET "
+                +EventoContract.tablaCategoria.ICONO_COLOR+ " = "+"'"+cadenaColor+"' WHERE "
+                +EventoContract.tablaCategoria.DESCRIP + " = '"+cadena+"';";
+        db.execSQL(actualizar+actualizar2);
+
     }
 
     public static void eliminaCategoria(Context context, String filtro)
@@ -256,7 +258,7 @@ public class DataDB
         //Eliminando la categoria
         String selection = EventoContract.tablaCategoria.DESCRIP + " LIKE ?";
         String[] selectionArgs = {filtro};
-        db.delete(EventoContract.tablaContactos.TABLE_NAME, selection, selectionArgs);
+        db.delete(EventoContract.tablaCategoria.TABLE_NAME, selection, selectionArgs);
     }
 
 
@@ -283,5 +285,7 @@ public class DataDB
         }
         return null;
     }
+
+
 
 }
