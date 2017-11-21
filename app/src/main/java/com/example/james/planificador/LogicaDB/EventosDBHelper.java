@@ -47,7 +47,8 @@ public class EventosDBHelper extends SQLiteOpenHelper
                     EventoContract.SitiosCreados.NOMBRE + TEXT_TYPE + COMMA_SEP +
                     EventoContract.SitiosCreados.LATI + TEXT_TYPE + COMMA_SEP +
                     EventoContract.SitiosCreados.LONGI + TEXT_TYPE + COMMA_SEP +
-                    EventoContract.SitiosCreados.FK_DESCRIP_CATEGORIA + TEXT_TYPE + " )";
+                    EventoContract.SitiosCreados.FK_DESCRIP_CATEGORIA + TEXT_TYPE +
+                    EventoContract.SitiosCreados.TEL + TEXT_TYPE + COMMA_SEP +" )";
 
     private static final String SQL_CREATE_TABLE_CONTACTOS =
             "CREATE TABLE "+EventoContract.tablaContactos.TABLE_NAME + " ("+

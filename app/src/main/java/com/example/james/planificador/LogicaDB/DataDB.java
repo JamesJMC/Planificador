@@ -287,5 +287,19 @@ public class DataDB
     }
 
 
+    // **********************************************           SITIOS          ***************************************************
 
+    public static void guardarSitio(Context context, String nombre, String longitud, String lat, String desc, String telefono)
+    {
+        EventosDBHelper mDbHelper = new EventosDBHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(EventoContract.SitiosCreados.NOMBRE,nombre);
+        values.put(EventoContract.SitiosCreados.LONGI,longitud);
+        values.put(EventoContract.SitiosCreados.LATI,lat);
+        values.put(EventoContract.SitiosCreados.FK_DESCRIP_CATEGORIA,desc);
+        values.put(EventoContract.SitiosCreados.TEL,telefono);
+        db.insert(EventoContract.SitiosCreados.TABLE_NAME, null, values);
+    }
 }

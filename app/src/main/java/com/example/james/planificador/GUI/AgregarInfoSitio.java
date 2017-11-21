@@ -8,13 +8,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.james.planificador.LogicaDB.DataDB;
 import com.example.james.planificador.R;
 
 import java.io.File;
@@ -45,6 +48,9 @@ public class AgregarInfoSitio extends AppCompatActivity implements View.OnClickL
     public Typeface tp;
 
     Global object = Main.globalObject;
+
+    ArrayList<ArrayList<String>> categories = new ArrayList<ArrayList<String>>();
+    ArrayList<String> listaNombreEventos = new ArrayList<>();
 
 
     @Override
@@ -126,6 +132,34 @@ public class AgregarInfoSitio extends AppCompatActivity implements View.OnClickL
                 Bitmap cameraImage = (Bitmap) data.getExtras().get("data");
                 imageView.setImageBitmap(cameraImage);
             }
+        }
+    }
+
+    private void cargarCategrias()
+    {
+        categories = new ArrayList<ArrayList<String>>();
+        listaNombreEventos = new ArrayList<>();
+        categories = DataDB.getCategoria(getApplicationContext());
+        int x = 0;
+
+        //obtener solo nombres de la base de datos
+        if (!(categories == null))
+        {
+            if (!categories.isEmpty())
+            {
+                int i = categories.size();
+                while (x < i) {
+                    listaNombreEventos.add(categories.get(x).get(0));
+                    x++;
+                }
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+                    android.R.layout.simple_spinner_item,listaNombreEventos);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            categorias.setAdapter(adapter);//las categorias => eventosSp
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"Agregue una categoría",Toast.LENGTH_SHORT).show();
         }
     }
 }
